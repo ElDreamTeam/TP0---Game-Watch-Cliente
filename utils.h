@@ -16,6 +16,8 @@
 #include<netdb.h>
 #include<string.h>
 
+
+
 typedef enum
 {
 	MENSAJE = 1,

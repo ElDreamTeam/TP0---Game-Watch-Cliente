@@ -10,7 +10,16 @@
 //TODO
 void* serializar_paquete(t_paquete* paquete, int bytes)
 {
+	void* a_enviar = malloc (bytes + sizeof(int));
+	int offset=0;
 
+	memcpy(a_enviar+offset,&(paquete->codigo_operacion),sizeof(int));
+	offset+=sizeof(int);
+    memcpy(a_enviar+offset,&(paquete->buffer->size),sizeof(int));
+    offset+=sizeof(int);
+    memcpy(a_enviar+offset,paquete->buffer->stream,paquete->buffer->size);
+
+    return a_enviar;
 }
 
 int crear_conexion(char *ip, char* puerto)
@@ -38,12 +47,38 @@ int crear_conexion(char *ip, char* puerto)
 //TODO
 void enviar_mensaje(char* mensaje, int socket_cliente)
 {
+	int long_mensaje=strlen(mensaje)+1;
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	t_paquete* paquete = malloc(sizeof(t_paquete));
+	buffer->stream = malloc(long_mensaje);
 
+
+    buffer->size=long_mensaje;
+    memcpy(buffer->stream,mensaje,long_mensaje);
+    paquete->buffer=buffer;
+    paquete->codigo_operacion=MENSAJE;
+    send(socket_cliente,serializar_paquete(paquete,buffer->size),buffer->size+sizeof(int)*2,0);
+    free(buffer->stream);
+    free(paquete);
+    free(buffer);
 }
+
+
 
 //TODO
 char* recibir_mensaje(int socket_cliente)
 {
+	printf("ASD");
+	int codigoOP;
+	int size;
+	void * stream;
+
+    recv(socket_cliente, &codigoOP, sizeof(int), MSG_WAITALL);
+	recv(socket_cliente, &size, sizeof(int), MSG_WAITALL);
+	stream = malloc(size);
+ 	recv(socket_cliente, stream, size, MSG_WAITALL);
+
+	return (char *)stream;
 
 }
 
