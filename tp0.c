@@ -29,16 +29,15 @@ int main(void)
 	//antes de continuar, tenemos que asegurarnos que el servidor esté corriendo porque lo necesitaremos para lo que sigue.
 
 	//crear conexion
-    //conexion=crear_conexion(config_get_string_value(config,"IP"), config_get_string_value(config,"PUERTO"));
-	conexion=crear_conexion("127.0.0.1", "4444");
+    conexion=crear_conexion(config_get_string_value(config,"IP"), config_get_string_value(config,"PUERTO"));
+
 
 	//enviar mensaje
 
-	enviar_mensaje("HOLA RAMA",conexion);
+	enviar_mensaje("PRUEBA FINAL",conexion);
 
 
 	//recibir mensaje
-
 	log_info(logger, recibir_mensaje(conexion));
 
 

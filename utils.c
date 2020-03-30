@@ -63,12 +63,9 @@ void enviar_mensaje(char* mensaje, int socket_cliente)
     free(buffer);
 }
 
-
-
 //TODO
 char* recibir_mensaje(int socket_cliente)
 {
-	printf("ASD");
 	int codigoOP;
 	int size;
 	void * stream;
